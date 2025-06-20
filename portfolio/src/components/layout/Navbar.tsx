@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -16,22 +17,29 @@ const navLinks = [
 
 const Navbar = () => {
   const pathname = usePathname();
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    // Debugging theme persistence
+    if (typeof window !== 'undefined') {
+      console.log('Theme from localStorage:', localStorage.getItem('theme'));
+    }
   }, []);
+
+  const toggleMobileMenu = () => setMobileOpen((prev) => !prev);
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-[#0f1117] text-black dark:text-white transition-colors duration-300">
-      <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 py-4">
         {/* Logo */}
-        <Link href="/" className="font-semibold text-lg">
+        <Link href="/" className="text-xl font-bold tracking-tight">
           Tech Portfolio
         </Link>
 
-        {/* Links */}
+        {/* Desktop Nav */}
         <ul className="hidden md:flex items-center gap-6 text-sm font-medium">
           {navLinks.map((link) => (
             <li key={link.name}>
@@ -49,15 +57,20 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/* Controls */}
-        <div className="flex items-center gap-4">
-          {/* Theme Toggle */}
+        {/* Right Controls */}
+        <div className="flex items-center gap-3 md:gap-4">
+          {/* Theme Toggle Icon */}
           {mounted && (
             <button
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="px-4 py-2 text-sm rounded-md bg-gray-200 dark:bg-gray-700 dark:text-white text-black hover:opacity-90 transition"
+              onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+              className="p-2 rounded-md bg-gray-200 dark:bg-gray-700 hover:opacity-90 transition"
+              aria-label="Toggle theme"
             >
-              {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+              {resolvedTheme === 'dark' ? (
+                <Sun className="w-5 h-5 text-yellow-400" />
+              ) : (
+                <Moon className="w-5 h-5 text-gray-800" />
+              )}
             </button>
           )}
 
@@ -67,10 +80,42 @@ const Navbar = () => {
             alt="Profile"
             width={32}
             height={32}
-            className="rounded-full border dark:border-gray-400 border-gray-600"
+            className="rounded-full border border-gray-500 dark:border-gray-300"
           />
+
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={toggleMobileMenu}
+            className="md:hidden text-gray-800 dark:text-gray-200 focus:outline-none"
+            aria-label="Toggle navigation"
+          >
+            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Nav */}
+      {mobileOpen && (
+        <div className="md:hidden bg-white dark:bg-[#0f1117] px-6 pb-4 shadow-md">
+          <ul className="flex flex-col gap-4 text-sm font-medium">
+            {navLinks.map((link) => (
+              <li key={link.name}>
+                <Link
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`block py-1 ${
+                    pathname === link.href
+                      ? 'text-blue-600 dark:text-blue-400 font-semibold'
+                      : 'hover:underline'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </nav>
   );
 };
