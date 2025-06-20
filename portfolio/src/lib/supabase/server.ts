@@ -1,7 +1,7 @@
 // src/lib/supabase/server.ts
-import { createClient } from '@supabase/supabase-js'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 
-export const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY! // Required for SSR reads, or use anon key only if RLS is off
-)
+export function createSupabaseServerClient() {
+  return createServerComponentClient({ cookies })
+}

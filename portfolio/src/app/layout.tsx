@@ -1,18 +1,21 @@
-// src/app/layout.tsx
-import './globals.css'
-import { Inter } from 'next/font/google'
-
-const inter = Inter({ subsets: ['latin'] })
+import './globals.css';
+import Navbar from '@/components/layout/Navbar';
+import ThemeProvider from '@/components/layout/ThemeProvider'; // your updated wrapper
 
 export const metadata = {
-  title: 'My Portfolio',
-  description: 'Full-stack project portfolio built with Next.js and Supabase',
-}
+  title: 'Portfolio',
+  description: 'Tech Portfolio of [Antnhe Debebe]',
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={inter.className}>
-      <body>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className="transition-colors duration-300">
+        <ThemeProvider>
+          <Navbar />
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
-  )
+  );
 }
