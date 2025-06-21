@@ -1,13 +1,16 @@
+// src/app/projects/[slug]/page.tsx
 import { supabase } from '@/lib/supabase/client'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default async function ProjectDetailPage({
-  params,
-}: {
-  params: { slug: string }
-}) {
+type Props = {
+  params: {
+    slug: string
+  }
+}
+
+export default async function ProjectDetailPage({ params }: Props) {
   const { data: project, error } = await supabase
     .from('projects')
     .select('*')
@@ -21,6 +24,7 @@ export default async function ProjectDetailPage({
       <nav className="text-sm text-gray-400 mb-4">
         <Link href="/projects" className="hover:underline">Projects</Link> / {project.title}
       </nav>
+
       <h1 className="text-3xl font-bold mb-2">{project.title}</h1>
       <p className="text-gray-400 mb-6">{project.description}</p>
 
@@ -55,11 +59,13 @@ export default async function ProjectDetailPage({
         <section className="mb-10">
           <h2 className="text-xl font-semibold mb-2">Key Features</h2>
           <ul className="list-disc list-inside space-y-2 text-gray-300">
-            {project.features.map((f: { title: string; description: string }, i: number) => (
-              <li key={i}>
-                <strong>{f.title}:</strong> {f.description}
-              </li>
-            ))}
+            {project.features.map(
+              (f: { title: string; description: string }, i: number) => (
+                <li key={i}>
+                  <strong>{f.title}:</strong> {f.description}
+                </li>
+              )
+            )}
           </ul>
         </section>
       )}
@@ -124,6 +130,7 @@ export default async function ProjectDetailPage({
   )
 }
 
+// Reusable section
 function Section({
   title,
   content,
