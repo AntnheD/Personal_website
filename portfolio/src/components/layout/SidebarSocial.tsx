@@ -5,11 +5,11 @@ import { clsx } from 'clsx';
 import { Share2, X } from 'lucide-react';
 
 const socialLinks = [
-  { href: 'https://twitter.com', icon: 'fab fa-twitter', label: 'Twitter' },
+  
   { href: 'https://github.com/AntnheD', icon: 'fab fa-github', label: 'GitHub' },
   { href: 'https://www.linkedin.com/in/antnhe-d-2a03552a2/', icon: 'fab fa-linkedin', label: 'LinkedIn' },
-  { href: 'https://instagram.com', icon: 'fab fa-instagram', label: 'Instagram' },
-  { href: 'https://youtube.com', icon: 'fab fa-youtube', label: 'YouTube' },
+  { href: 'https://www.instagram.com/antnhedebebe', icon: 'fab fa-instagram', label: 'Instagram' },
+  { href: 'https://t.me/Anteeeen2', icon: 'fab fa-telegram', label: 'Telegram' },
 ];
 
 const SidebarSocial = () => {

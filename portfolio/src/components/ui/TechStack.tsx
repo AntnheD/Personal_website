@@ -13,11 +13,7 @@ const techStack = [
     icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg',
     link: 'https://en.cppreference.com/w/cpp',
   },
-  {
-    name: 'OOP',
-    icon: '/icons/oop.svg', // You must store this locally
-    link: 'https://en.wikipedia.org/wiki/Object-oriented_programming',
-  },
+ 
   {
     name: 'React',
     icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',

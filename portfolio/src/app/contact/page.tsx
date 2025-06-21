@@ -10,28 +10,47 @@ const ContactPage = () => {
     message: '',
   });
 
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: connect to email API (e.g., EmailJS, Nodemailer)
-    console.log('Form submitted:', form);
-    alert('Message sent!');
-    setForm({ name: '', email: '', subject: '', message: '' });
+    setStatus('sending');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+
+      if (res.ok) {
+        setStatus('success');
+        alert('Message sent successfully!');
+        setForm({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setStatus('error');
+        alert('Failed to send message. Please try again.');
+      }
+    } catch (err) {
+      console.error('Error sending message:', err);
+      setStatus('error');
+      alert('An unexpected error occurred.');
+    }
   };
 
   return (
     <main className="max-w-3xl mx-auto px-6 py-12 text-black dark:text-white">
       <h1 className="text-3xl font-bold mb-2">Get in Touch</h1>
       <p className="text-gray-600 dark:text-gray-400 mb-10">
-        I&apos;m always open to discussing new projects, creative ideas, or opportunities. Feel free to reach out,
+        I am always open to discussing new projects, creative ideas, or opportunities. Feel free to reach out,
         and I&apos;ll get back to you as soon as possible.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Name */}
         <input
           type="text"
           name="name"
@@ -42,7 +61,6 @@ const ContactPage = () => {
           className="w-full px-4 py-3 rounded-md bg-gray-100 dark:bg-[#1c1e24] border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
-        {/* Email */}
         <input
           type="email"
           name="email"
@@ -53,7 +71,6 @@ const ContactPage = () => {
           className="w-full px-4 py-3 rounded-md bg-gray-100 dark:bg-[#1c1e24] border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
-        {/* Subject */}
         <input
           type="text"
           name="subject"
@@ -64,7 +81,6 @@ const ContactPage = () => {
           className="w-full px-4 py-3 rounded-md bg-gray-100 dark:bg-[#1c1e24] border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
-        {/* Message */}
         <textarea
           name="message"
           placeholder="Your Message"
@@ -75,12 +91,12 @@ const ContactPage = () => {
           className="w-full px-4 py-3 rounded-md bg-gray-100 dark:bg-[#1c1e24] border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
-        {/* Submit Button */}
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md transition"
+          disabled={status === 'sending'}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md transition disabled:opacity-60"
         >
-          Send Message
+          {status === 'sending' ? 'Sending...' : 'Send Message'}
         </button>
       </form>
     </main>

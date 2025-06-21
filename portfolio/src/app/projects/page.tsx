@@ -1,27 +1,29 @@
-import { supabase } from '@/lib/supabase/client'
-import Link from 'next/link'
-import Image from 'next/image'
-import { routes } from '@/constants/routes'
-import type { Project } from '@/types/project'
+import { supabase } from '@/lib/supabase/client';
+import Link from 'next/link';
+import Image from 'next/image';
+import { routes } from '@/constants/routes';
+import type { Project } from '@/types/project';
 
 export default async function ProjectsPage() {
   const { data: projects, error } = await supabase
     .from('projects')
     .select('*')
-    .order('created_at', { ascending: false })
+    .order('created_at', { ascending: false });
 
   if (!projects || error) {
     return (
       <div className="text-center py-20 text-gray-400">
         Failed to load projects.
       </div>
-    )
+    );
   }
 
   return (
     <div className="px-6 py-12 max-w-6xl mx-auto text-white">
       <h1 className="text-4xl font-bold mb-6">My Projects</h1>
-      <p className="text-gray-400 mb-12">Explore real-world applications I have built using modern tech stacks.</p>
+      <p className="text-gray-400 mb-12">
+        Explore real-world applications I have built using modern tech stacks.
+      </p>
 
       <div className="grid md:grid-cols-2 gap-8">
         {projects.map((project: Project) => (
@@ -35,9 +37,10 @@ export default async function ProjectsPage() {
                 src={project.thumbnail_url}
                 alt={project.title}
                 width={800}
-                height={400}
-                className="w-full h-48 object-cover"
-              unoptimized />
+                height={192}
+                style={{ width: '100%', height: '12rem', objectFit: 'cover', borderRadius: '0.5rem' }}
+                priority
+              />
             )}
             <div className="p-4">
               <h2 className="text-xl font-semibold">{project.title}</h2>
@@ -47,5 +50,5 @@ export default async function ProjectsPage() {
         ))}
       </div>
     </div>
-  )
+  );
 }

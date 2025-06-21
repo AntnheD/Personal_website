@@ -9,9 +9,13 @@ const ResumePage = () => {
       {/* Page Title */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">Professional Resume</h1>
-        <button className="px-4 py-2 bg-gray-100 dark:bg-[#2d2f38] text-sm rounded-md hover:opacity-90 transition">
-          Download PDF
-        </button>
+        <a
+          href="/Antnhe_Debebe_Resume.pdf"
+          download
+          className="px-4 py-2 bg-gray-100 dark:bg-[#2d2f38] text-sm rounded-md hover:opacity-90 transition"
+        >
+          Download Resume
+        </a>
       </div>
       <p className="text-gray-600 dark:text-gray-400 mb-12">
         A detailed overview of my education, skills, awards, and projects.
@@ -72,7 +76,7 @@ const ResumePage = () => {
               Organized by Addis Ababa Technology University, Ethiopian Intellectual Property Authority, and Ethiopian Academy of Sciences (April 2022).
             </p>
             <Image
-              src="/Image/exibit2.jpg" // Replace with your image
+              src="/Image/exibit2.jpg"
               alt="3rd Place Award"
               width={350}
               height={200}
@@ -91,7 +95,7 @@ const ResumePage = () => {
             <h3 className="font-semibold">Automatic Coffee Bean Color Sorter</h3>
             <p className="text-gray-600 dark:text-gray-400">3rd Place – National Engineering Competition, April 2022</p>
             <Image
-              src="/coffee_project.jpg" // Replace with your project image
+              src="/Image/coffee.jpeg"
               alt="Coffee Bean Color Sorter"
               width={350}
               height={200}
@@ -104,9 +108,13 @@ const ResumePage = () => {
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 mt-10">
-        <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm transition">
-          Download Full Resume
-        </button>
+        <a
+          href="/Antnhe_Debebe_CV.pdf"
+          download
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm transition"
+        >
+          Download CV
+        </a>
         <Link
           href="/projects"
           className="bg-gray-200 dark:bg-[#2c2e38] text-black dark:text-white px-6 py-2 rounded-lg text-sm flex items-center justify-center"
