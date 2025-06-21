@@ -3,13 +3,11 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 
-interface PageProps {
-  params: {
-    slug: string
-  }
-}
-
-export default async function ProjectDetailPage({ params }: PageProps) {
+export default async function ProjectDetailPage({
+  params,
+}: {
+  params: { slug: string }
+}) {
   const { data: project, error } = await supabase
     .from('projects')
     .select('*')
@@ -22,10 +20,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
     <div className="px-6 py-12 max-w-4xl mx-auto text-white">
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-400 mb-4">
-        <Link href="/projects" className="hover:underline">
-          Projects
-        </Link>{' '}
-        / {project.title}
+        <Link href="/projects" className="hover:underline">Projects</Link> / {project.title}
       </nav>
 
       {/* Title + Description */}
@@ -140,8 +135,6 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   )
 }
 
-// ─────────────────────────────────────────────
-// Reusable section component
 function Section({
   title,
   content,
