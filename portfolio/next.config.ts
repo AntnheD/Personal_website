@@ -13,6 +13,14 @@ const nextConfig: NextConfig = {
     ],
       domains: ['cdn.jsdelivr.net'],
   },
+
+  webpack: (config) => {
+    config.module = {
+      ...config.module,
+      exprContextCritical: false, // Disable the critical dependency warning
+    }
+    return config
+  },
 };
 
 export default nextConfig;

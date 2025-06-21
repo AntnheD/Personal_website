@@ -4,14 +4,11 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 
-// ✅ Define the expected `PageProps` from Next.js
-interface PageProps {
-  params: {
-    slug: string
-  }
-}
-
-export default async function ProjectDetailPage({ params }: PageProps) {
+export default async function ProjectDetailPage({
+  params
+}: {
+  params: { slug: string }
+}) {
   const { data: project, error } = await supabase
     .from('projects')
     .select('*')
