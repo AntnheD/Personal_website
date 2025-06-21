@@ -18,16 +18,12 @@ export default async function ProjectDetailPage({
 
   return (
     <div className="px-6 py-12 max-w-4xl mx-auto text-white">
-      {/* Breadcrumb */}
       <nav className="text-sm text-gray-400 mb-4">
         <Link href="/projects" className="hover:underline">Projects</Link> / {project.title}
       </nav>
-
-      {/* Title + Description */}
       <h1 className="text-3xl font-bold mb-2">{project.title}</h1>
       <p className="text-gray-400 mb-6">{project.description}</p>
 
-      {/* Thumbnail */}
       {project.thumbnail_url && (
         <Image
           src={project.thumbnail_url}
@@ -40,10 +36,8 @@ export default async function ProjectDetailPage({
         />
       )}
 
-      {/* Overview */}
       <Section title="Overview" content={project.overview} fallback="No overview provided." />
 
-      {/* Tech Stack */}
       {Array.isArray(project.tech_stack) && project.tech_stack.length > 0 && (
         <section className="mb-10">
           <h2 className="text-xl font-semibold mb-2">Tech Stack</h2>
@@ -57,23 +51,19 @@ export default async function ProjectDetailPage({
         </section>
       )}
 
-      {/* Features */}
       {Array.isArray(project.features) && project.features.length > 0 && (
         <section className="mb-10">
           <h2 className="text-xl font-semibold mb-2">Key Features</h2>
           <ul className="list-disc list-inside space-y-2 text-gray-300">
-            {project.features.map(
-              (feature: { title: string; description: string }, i: number) => (
-                <li key={i}>
-                  <strong>{feature.title}:</strong> {feature.description}
-                </li>
-              )
-            )}
+            {project.features.map((f: { title: string; description: string }, i: number) => (
+              <li key={i}>
+                <strong>{f.title}:</strong> {f.description}
+              </li>
+            ))}
           </ul>
         </section>
       )}
 
-      {/* Challenges & Solutions */}
       {(project.challenges || project.solutions) && (
         <section className="mb-10">
           <h2 className="text-xl font-semibold mb-2">Challenges & Solutions</h2>
@@ -90,10 +80,10 @@ export default async function ProjectDetailPage({
         </section>
       )}
 
-      {/* Lessons */}
-      {project.lessons && <Section title="Lessons Learned" content={project.lessons} />}
+      {project.lessons && (
+        <Section title="Lessons Learned" content={project.lessons} />
+      )}
 
-      {/* Live Preview */}
       {project.live_url && (
         <section className="mb-10">
           <h2 className="text-xl font-semibold mb-2">Live Preview</h2>
@@ -108,7 +98,6 @@ export default async function ProjectDetailPage({
         </section>
       )}
 
-      {/* Action Links */}
       <div className="flex gap-4 mt-8">
         {project.live_url && (
           <Link
