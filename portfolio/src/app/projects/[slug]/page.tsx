@@ -1,12 +1,15 @@
-// src/app/projects/[slug]/page.tsx
 import { supabase } from '@/lib/supabase/client'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 
+interface PageProps {
+  params: {
+    slug: string
+  }
+}
 
-
-export default async function ProjectDetailPage({ params }: { params: { slug: string } }) {
+export default async function ProjectDetailPage({ params }: PageProps) {
   const { data: project, error } = await supabase
     .from('projects')
     .select('*')
@@ -19,7 +22,10 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
     <div className="px-6 py-12 max-w-4xl mx-auto text-white">
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-400 mb-4">
-        <Link href="/projects" className="hover:underline">Projects</Link> / {project.title}
+        <Link href="/projects" className="hover:underline">
+          Projects
+        </Link>{' '}
+        / {project.title}
       </nav>
 
       {/* Title + Description */}
@@ -35,19 +41,22 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
           height={400}
           className="rounded-lg shadow-md mb-8 w-full object-cover"
           priority
-       unoptimized />
+          unoptimized
+        />
       )}
 
       {/* Overview */}
       <Section title="Overview" content={project.overview} fallback="No overview provided." />
 
       {/* Tech Stack */}
-      {project.tech_stack?.length > 0 && (
+      {Array.isArray(project.tech_stack) && project.tech_stack.length > 0 && (
         <section className="mb-10">
           <h2 className="text-xl font-semibold mb-2">Tech Stack</h2>
           <div className="flex flex-wrap gap-2">
             {project.tech_stack.map((tech: string) => (
-              <span key={tech} className="bg-zinc-800 text-sm px-3 py-1 rounded">{tech}</span>
+              <span key={tech} className="bg-zinc-800 text-sm px-3 py-1 rounded">
+                {tech}
+              </span>
             ))}
           </div>
         </section>
@@ -58,11 +67,13 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
         <section className="mb-10">
           <h2 className="text-xl font-semibold mb-2">Key Features</h2>
           <ul className="list-disc list-inside space-y-2 text-gray-300">
-            {project.features.map((feature: { title: string; description: string }, i: number) => (
-              <li key={i}>
-                <strong>{feature.title}:</strong> {feature.description}
-              </li>
-            ))}
+            {project.features.map(
+              (feature: { title: string; description: string }, i: number) => (
+                <li key={i}>
+                  <strong>{feature.title}:</strong> {feature.description}
+                </li>
+              )
+            )}
           </ul>
         </section>
       )}
@@ -71,15 +82,21 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
       {(project.challenges || project.solutions) && (
         <section className="mb-10">
           <h2 className="text-xl font-semibold mb-2">Challenges & Solutions</h2>
-          {project.challenges && <p className="mb-2"><strong>Challenges:</strong> {project.challenges}</p>}
-          {project.solutions && <p><strong>Solutions:</strong> {project.solutions}</p>}
+          {project.challenges && (
+            <p className="mb-2">
+              <strong>Challenges:</strong> {project.challenges}
+            </p>
+          )}
+          {project.solutions && (
+            <p>
+              <strong>Solutions:</strong> {project.solutions}
+            </p>
+          )}
         </section>
       )}
 
       {/* Lessons */}
-      {project.lessons && (
-        <Section title="Lessons Learned" content={project.lessons} />
-      )}
+      {project.lessons && <Section title="Lessons Learned" content={project.lessons} />}
 
       {/* Live Preview */}
       {project.live_url && (
@@ -91,7 +108,7 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
               title="Live Project"
               className="w-full h-full rounded-lg"
               allowFullScreen
-            ></iframe>
+            />
           </div>
         </section>
       )}
@@ -124,7 +141,7 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
 }
 
 // ─────────────────────────────────────────────
-// Optional: Reusable section component
+// Reusable section component
 function Section({
   title,
   content,
