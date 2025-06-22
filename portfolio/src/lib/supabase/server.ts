@@ -1,14 +1,36 @@
 // src/lib/supabase/server.ts
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { createServerActionClient } from '@supabase/auth-helpers-nextjs'
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
-// For React Server Components (RSC)
-export function createSupabaseServerClient() {
-  return createServerComponentClient({ cookies });
+export async function createSupabaseServerClient() {
+  const cookieStore = await cookies();
+  
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          try {
+            cookieStore.set({ name, value, ...options })
+          } catch {
+            // Handle error if needed
+          }
+        },
+        remove(name: string, options: CookieOptions) {
+          try {
+            cookieStore.set({ name, value: '', ...options })
+          } catch {
+            // Handle error if needed
+          }
+        },
+      },
+    }
+  )
 }
 
-// For API routes or server actions
-export function createClient() {
-  return createServerActionClient({ cookies });
-}
+// Alias for createClient with the same implementation
+export const createClient = createSupabaseServerClient;

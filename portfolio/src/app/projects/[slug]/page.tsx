@@ -1,18 +1,20 @@
-// src/app/projects/[slug]/page.tsx
 import { supabase } from '@/lib/supabase/client'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default async function ProjectDetailPage({
-  params
+// Your format: using params as a Promise
+export default async function Page({
+  params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
+  const { slug } = await params
+
   const { data: project, error } = await supabase
     .from('projects')
     .select('*')
-    .eq('slug', params.slug)
+    .eq('slug', slug)
     .single()
 
   if (!project || error) return notFound()
